@@ -1,26 +1,26 @@
-name: ci-exchain-bin
+name: gen bin
 
 on:
-  release:
-    types:
-    - created
-    - published
-    - edited
+  push:
+    branches:
+      - 'releases/**'
 
 jobs:
-  strategy:
-    matrix:
-      include:
-        - goarch: amd64
-          goos: linux
-        - goarch: amd64
-          goos: darwin
-        - goarch: arm64
-          goos: linux
-        - goarch: arm64
-          goos: darwin
+  generate-bin:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goarch: amd64
+            goos: linux
+          #- goarch: amd64
+          #  goos: darwin
+          #- goarch: arm64
+          #  goos: linux
+          #- goarch: arm64
+          #  goos: darwin
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@dev
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -30,17 +30,17 @@ jobs:
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
-  
-      - name: Packaging...
-        run: tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz exchaind LICENSE
-      - name: Uploading assets...
-        if: ${{ !env.ACT }}
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz
-          asset_name: exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz
-          asset_content_type: application/gzip
+
+      #- name: Packaging...
+      #  run: tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz exchaind LICENSE
+      #- name: Uploading assets...
+      #  if: ${{ !env.ACT }}
+      #  id: upload-release-asset
+      #  uses: actions/upload-release-asset@v1
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #    upload_url: ${{ github.event.release.upload_url }}
+      #    asset_path: ./exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz
+      #    asset_name: exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz
+      #    asset_content_type: application/gzip
