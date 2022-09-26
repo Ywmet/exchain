@@ -1,4 +1,4 @@
-name: ci-exchain-binary
+name: ci-exchain-bin
 
 on:
   release:
