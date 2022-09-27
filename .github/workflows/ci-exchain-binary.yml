@@ -41,7 +41,7 @@ jobs:
       - name: Packaging...
         run: |
           tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz --absolute-names /home/runner/go/bin/exchain* LICENSE
-          echo `pwd`
+          echo `find /home/runner/work/exchain`
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
