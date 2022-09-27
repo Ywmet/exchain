@@ -29,7 +29,9 @@ jobs:
           go mod download 
           go env
           make install #WITH_ROCKSDB=$WITH_ROCKSDB LINK_STATICALLY=true
-          which exchaind
+          echo `which exchaind`
+          echo "end" 
+
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
