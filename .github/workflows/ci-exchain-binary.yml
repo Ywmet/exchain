@@ -21,7 +21,7 @@ jobs:
           - goarch: arm64
             goos: darwin
     steps:
-      - uses: actions/checkout@dev
+      - uses: actions/checkout@v2
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
