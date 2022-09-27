@@ -20,8 +20,8 @@ jobs:
         include:
           - goarch: amd64
             goos: linux
-          - goarch: amd64
-            goos: darwin
+          #- goarch: amd64
+          #  goos: darwin
           #- goarch: arm64
           #  goos: darwin
     steps:
@@ -36,8 +36,8 @@ jobs:
           mv rocksdb /tmp/rocksdb 
           cd /tmp/rocksdb
           sed -i 's/install -C /install -c /g' Makefile
-          make libsnappy.a && cp libsnappy.a /usr/lib 
-          make liblz4.a && cp liblz4.a /usr/lib 
+          make libsnappy.a && sudo cp libsnappy.a /usr/lib 
+          make liblz4.a && sudo cp liblz4.a /usr/lib 
           make static_lib PREFIX=/usr LIBDIR=/usr/lib 
           make install-static PREFIX=/usr LIBDIR=/usr/lib
           rm -rf /tmp/rocksdb
