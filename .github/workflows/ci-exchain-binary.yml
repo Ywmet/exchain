@@ -30,10 +30,21 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17
+      - name: Set up rocksdb
+        run: |
+          git clone https://github.com/facebook/rocksdb.git -b v6.27.3 
+          mv rocksdb /tmp/rocksdb 
+          cd /tmp/rocksdb
+          sed -i 's/install -C /install -c /g' Makefile
+          make libsnappy.a && cp libsnappy.a /usr/lib 
+          make liblz4.a && cp liblz4.a /usr/lib 
+          make static_lib PREFIX=/usr LIBDIR=/usr/lib 
+          make install-static PREFIX=/usr LIBDIR=/usr/lib
+          rm -rf /tmp/rocksdb
       - name: Making exchaind
         run: | 
           go mod download 
-          make install #WITH_ROCKSDB=$WITH_ROCKSDB LINK_STATICALLY=true
+          make install WITH_ROCKSDB=true LINK_STATICALLY=true
 
         env:
           GOOS: ${{ matrix.goos }}
