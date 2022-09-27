@@ -37,7 +37,7 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
 
       - name: Packaging...
-        run: tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz `which exchaind` `which exchaincli` LICENSE
+        run: tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz /home/runner/go/bin/exchain* LICENSE
       - name: Uploading assets...
         if: ${{ !env.ACT }}
         id: upload-release-asset
