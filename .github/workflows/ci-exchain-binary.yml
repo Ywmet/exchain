@@ -27,17 +27,14 @@ jobs:
       - name: Making exchaind
         run: | 
           go mod download 
-          go env
           make install #WITH_ROCKSDB=$WITH_ROCKSDB LINK_STATICALLY=true
-          echo `which exchaind`
-          echo "end" 
 
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
 
       - name: Packaging...
-        run: tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz /home/runner/go/bin/exchain* LICENSE
+        run: tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz --absolute-names /home/runner/go/bin/exchain* LICENSE
       - name: Uploading assets...
         if: ${{ !env.ACT }}
         id: upload-release-asset
