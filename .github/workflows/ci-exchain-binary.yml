@@ -26,6 +26,7 @@ jobs:
           go-version: 1.17
       - name: Making exchaind
         run: | 
+          go mod tidy
           make install #WITH_ROCKSDB=$WITH_ROCKSDB LINK_STATICALLY=true
           which exchaind
         env:
