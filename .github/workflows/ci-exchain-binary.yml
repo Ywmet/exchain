@@ -16,8 +16,8 @@ jobs:
             goos: linux
           #- goarch: amd64
           #  goos: darwin
-          - goarch: arm64
-            goos: darwin
+          #- goarch: arm64
+          #  goos: darwin
     steps:
       - uses: actions/checkout@v2
       - name: Set up Go
