@@ -36,17 +36,14 @@ jobs:
       - name: Making exchaind
         run: |
           echo `pwd`
-          sudo mkdir -p /home/runner/usr/lib
-          wget "https://github.com/CosmWasm/wasmvm/releases/download/v1.0.0/libwasmvm_muslc.x86_64.a" -O /home/runner/usr/lib/libwasmvm_muslc.x86_64.a
           go mod download
-          make mainnet WITH_ROCKSDB=false LINK_STATICALLY=true -Wno-error=foo
+          make mainnet WITH_ROCKSDB=false LINK_STATICALLY=false -Wno-error=foo
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
       - name: Packaging...
         run: |
-          tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz /home/runner/go/bin/exchaind /home/runner/go/bin/exchaincli
-          echo `find /home/runner/work/exchain`
+          tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz go/bin/exchaind go/bin/exchaincli
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
