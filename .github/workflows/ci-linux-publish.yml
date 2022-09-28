@@ -1,11 +1,5 @@
 name: gen linux bin
 
-#on:
-#  push:
-#    branches:
-      #- 'dev'
-#      - 'releases/**'
-
 on:
   push:
     # Sequence of patterns matched against refs/tags
@@ -37,6 +31,7 @@ jobs:
           cd /tmp/rocksdb
           sed -i 's/install -C /install -c /g' Makefile
           sudo mkdir -p /home/runner/usr/lib
+          sudo mkdir -p /home/runner/usr/lib/pkgconfig
           make libsnappy.a && sudo cp libsnappy.a /home/runner/usr/lib 
           make liblz4.a && sudo cp liblz4.a /home/runner/usr/lib 
           make static_lib PREFIX=/usr LIBDIR=/home/runner/usr/lib 
