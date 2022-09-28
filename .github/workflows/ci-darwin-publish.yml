@@ -35,6 +35,7 @@ jobs:
       #    rm -rf /tmp/rocksdb
       - name: Making exchaind
         run: |
+          sudo xcode-select --install
           go mod download
           make mainnet WITH_ROCKSDB=false LINK_STATICALLY=true
           echo `find / -name exchaind`
