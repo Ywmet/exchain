@@ -38,13 +38,13 @@ jobs:
           echo `pwd`
           go mod download
           make mainnet WITH_ROCKSDB=false LINK_STATICALLY=false
-          find /Users -name exchaincli
+        # find /Users -name exchaincli /Users/runner/go/bin/
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
       - name: Packaging...
         run: |
-          tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz go/bin/exchaind go/bin/exchaincli
+          tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz /Users/runner/go/bin/exchaind /Users/runner/go/bin/exchaincli
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
