@@ -44,7 +44,7 @@ jobs:
       - name: Making exchaind
         run: | 
           go mod download 
-          make install WITH_ROCKSDB=false LINK_STATICALLY=true
+          make mainnet WITH_ROCKSDB=false LINK_STATICALLY=true
 
         env:
           GOOS: ${{ matrix.goos }}
