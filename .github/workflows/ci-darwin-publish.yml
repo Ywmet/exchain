@@ -35,7 +35,8 @@ jobs:
       #    rm -rf /tmp/rocksdb
       - name: Making exchaind
         run: |
-          sudo xcode-select --reset
+          sudo mkdir -p /home/runner/usr/lib
+          wget "https://github.com/CosmWasm/wasmvm/releases/download/v1.0.0/libwasmvm_muslc.x86_64.a" -O /home/runner/usr/lib/libwasmvm_muslc.x86_64.a
           go mod download
           make mainnet WITH_ROCKSDB=false LINK_STATICALLY=true -Wno-error=foo
         env:
