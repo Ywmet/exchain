@@ -26,7 +26,8 @@ jobs:
           go-version: 1.17
       - name: Set up rocksdb
         run: |
-          git clone https://github.com/facebook/rocksdb.git -b v6.27.3 
+          git clone https://github.com/facebook/rocksdb.git -b v6.27.3
+          cd rocksdb
           sed -i 's/install -C /install -c /g' Makefile
           sudo mkdir -p usr/lib
           sudo mkdir -p usr/lib/pkgconfig
