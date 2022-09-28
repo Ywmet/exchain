@@ -99,7 +99,7 @@ ifeq ($(WITH_ROCKSDB),true)
 endif
 
 ifeq ($(LINK_STATICALLY),true)
-	ldflags += -linkmode=external -extldflags "-Wl,-z,muldefs -static"
+	ldflags += -linkmode=external -extldflags "-wl,-z,muldefs -static"
 endif
 
 ifeq ($(OKCMALLOC),tcmalloc)

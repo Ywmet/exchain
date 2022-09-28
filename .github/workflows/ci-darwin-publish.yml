@@ -1,0 +1,76 @@
+name: gen darwin bin
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  generate-bin:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        include:
+          - goarch: amd64
+            goos: darwin
+          #- goarch: arm64
+          #  goos: darwin
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.17
+      #- name: Set up rocksdb
+      #  run: |
+      #    git clone https://github.com/facebook/rocksdb.git -b v6.27.3
+      #    mv rocksdb /tmp/rocksdb
+      #    cd /tmp/rocksdb
+      #    sed -i 's/install -C /install -c /g' Makefile
+      #    make libsnappy.a && sudo cp libsnappy.a /usr/lib
+      #    make liblz4.a && sudo cp liblz4.a /usr/lib
+      #    make static_lib PREFIX=/usr LIBDIR=/usr/lib
+      #    make install-static PREFIX=/usr LIBDIR=/usr/lib
+      #    rm -rf /tmp/rocksdb
+      - name: Making exchaind
+        run: |
+          sudo xcode-select --reset
+          go mod download
+          make mainnet WITH_ROCKSDB=false LINK_STATICALLY=true
+        env:
+          GOOS: ${{ matrix.goos }}
+          GOARCH: ${{ matrix.goarch }}
+      - name: Packaging...
+        run: |
+          tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz /home/runner/go/bin/exchaind /home/runner/go/bin/exchaincli
+          echo `find /home/runner/work/exchain`
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: /home/runner/work/exchain/exchain/exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz # /home/runner/work/exchain/exchain/exchain-linux-amd64.tgz
+          asset_name: exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz
+          asset_content_type: application/zip
+        #- name: Uploading assets...
+        #  if: ${{ !env.ACT }}
+        #  id: upload-release-asset
+        #  uses: actions/upload-artifact@v2
+        #env:
+        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #  with:
+      #    name: exchain binary
+      #    path: exchain*.tgz
