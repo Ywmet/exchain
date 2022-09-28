@@ -1,4 +1,4 @@
-name: gen bin
+name: gen darwin bin
 
 on:
   push:
@@ -43,7 +43,7 @@ jobs:
           GOARCH: ${{ matrix.goarch }}
       - name: Packaging...
         run: |
-          tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz /home/runner/go/bin/exchain* LICENSE
+          tar czf exchain-${{ matrix.goos }}-${{ matrix.goarch }}.tgz /home/runner/go/bin/exchaind /home/runner/go/bin/exchaincli
           echo `find /home/runner/work/exchain`
       - name: Create Release
         id: create_release
