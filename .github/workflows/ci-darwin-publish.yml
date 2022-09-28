@@ -37,7 +37,8 @@ jobs:
         run: |
           echo `pwd`
           go mod download
-          make mainnet WITH_ROCKSDB=false LINK_STATICALLY=false -Wno-error=foo
+          make mainnet WITH_ROCKSDB=false LINK_STATICALLY=false
+          find /Users -name exchaincli
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
