@@ -37,7 +37,7 @@ jobs:
         run: |
           sudo xcode-select --reset
           go mod download
-          make mainnet WITH_ROCKSDB=false LINK_STATICALLY=true
+          make mainnet WITH_ROCKSDB=false LINK_STATICALLY=true -Wno-error=foo
         env:
           GOOS: ${{ matrix.goos }}
           GOARCH: ${{ matrix.goarch }}
