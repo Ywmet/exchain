@@ -30,15 +30,12 @@ jobs:
           git clone https://github.com/facebook/rocksdb.git -b v6.27.3
           cd rocksdb
           sed -i 's/install -C /install -c /g' Makefile
-        #sudo mkdir -p usr/lib
-        #sudo mkdir -p usr/lib/pkgconfig
-        #wget "https://github.com/CosmWasm/wasmvm/releases/download/v1.0.0/libwasmvm_muslc.x86_64.a" -O /usr/local/lib64/libwasmvm_muslc.x86_64.a
           make libsnappy.a && sudo cp libsnappy.a /usr/local/lib64
           make liblz4.a && sudo cp liblz4.a /usr/local/lib64 
           make static_lib PREFIX=/usr/local/ LIBDIR=lib64 
           make install-static PREFIX=/usr/local/ LIBDIR=lib64
       - name: Making exchaind
-        run: | 
+        run: |
           go mod download 
           make mainnet WITH_ROCKSDB=true LINK_STATICALLY=true
 
