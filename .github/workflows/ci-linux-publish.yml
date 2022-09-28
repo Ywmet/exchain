@@ -32,8 +32,8 @@ jobs:
           sed -i 's/install -C /install -c /g' Makefile
           make libsnappy.a && sudo cp libsnappy.a /usr/local/lib64
           make liblz4.a && sudo cp liblz4.a /usr/local/lib64 
-          make static_lib PREFIX=usr/local/ LIBDIR=lib64 
-          make install-static PREFIX=usr/local/ LIBDIR=lib64
+          make static_lib PREFIX=usr/local LIBDIR=lib64 
+          make install-static PREFIX=usr/local LIBDIR=lib64
       - name: Making exchaind
         run: |
           go mod download 
